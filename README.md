@@ -12,6 +12,35 @@ PPO, self-play PPO and GRPO across 4-, 5- and 6-player tables.
 Real local screenshots. Fresh installs start empty; trained weights, collected
 bots and private datasets are not bundled. Three simple example bots are included.
 
+## General flow
+
+1. **Register existing bots.** Add agents to the model library. They can serve as
+   baselines to compare against, opponents to play against, or teachers to learn
+   from. You can evaluate existing bots without training a new one.
+
+2. **Build a dataset.** Let selected teachers play and record what they could see
+   and which actions they took. Alternatively, import compatible PHH hand
+   histories. The result is a collection of situation-and-action examples.
+
+3. **Train a starting bot with behaviour cloning (BC).** The model learns to
+   imitate the recorded actions. This produces a playable bot and the starting
+   checkpoint for the dashboard's reinforcement-learning methods.
+
+4. **Try learning from new games.** From a completed BC checkpoint, choose
+   **PPO** against registered opponents, **self-play PPO** against copies of the
+   learner, or **GRPO** to compare rewards from matched attempts. Mixed self-play
+   can also use older copies and registered bots. These are alternative
+   experiments; choose one route at a time. You can also keep the BC bot.
+
+5. **Export and compare.** Use validation results to select a checkpoint, export
+   it as a playable bot, and compare it with unchanged baselines on fresh seeds.
+   Test the **same exported bot at 4-, 5- and 6-player tables**, counting the bot
+   itself. Check each table size separately to see where it performs well or
+   still needs work.
+
+The [pipeline guide](docs/PIPELINE.md) explains the data, rewards and evaluation
+rules behind each stage.
+
 ## Try it
 
 Use **Python 3.12**. If `python` is unavailable or points to another version,
