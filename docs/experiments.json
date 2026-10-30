@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-10-11",
+  "timezone": "Australia/Melbourne",
+  "scope": "Sanitized snapshot of the original development workspace. A fresh installation starts with its own empty job history; the historical jobs and checkpoints are not bundled.",
+  "latest_experiment": {
+    "name": "SELF-PPO",
+    "method": "self_play_ppo",
+    "status": "paused",
+    "date": "2026-10-04",
+    "episodes_completed": 479000,
+    "episodes_target": 600000,
+    "table_sizes": [4, 5, 6],
+    "starting_model": "BC_2",
+    "reward": "90% game placement + 10% bounded chip profit",
+    "best_iteration": 355,
+    "note": "Latest saved training experiment in the audited main workspace. Historical paused state, not a running job in this installation. No final held-out test is claimed for this unfinished job."
+  },
+  "methods": [
+    {
+      "id": "collection",
+      "title": "Collect existing models and demonstrations",
+      "status": "Completed experiments",
+      "summary": "Register versioned bots, select teachers, and record their legal observations and executed actions in mixed table configurations.",
+      "evidence": "FirstDatasetV2 completed with 310,500 table-hand episodes and 2,952,868 decision records across 4-, 5-, and 6-player tables.",
+      "limitations": "Teachers are sources of behavior, not guaranteed optimal play. Upstream attribution and redistribution rights belong in the source registry."
+    },
+    {
+      "id": "bc",
+      "title": "Behaviour cloning (BC)",
+      "status": "Completed experiments",
+      "summary": "Train one neural policy to imitate the selected teachers' actions, using a grouped train/validation/test split.",
+      "evidence": "BC_1 completed 10 epochs. BC_2 finished early after 76 of 100 requested epochs and selected epoch 75. Both used FirstDatasetV2.",
+      "limitations": "Action agreement measures imitation, not winnings. The same decision data contains correlated decisions and duplicate-deal groups."
+    },
+    {
+      "id": "ppo",
+      "title": "PPO against existing bots",
+      "status": "Completed and paused experiments",
+      "summary": "Warm-start the actor from BC, collect new poker hands against frozen registered opponents, and update the actor with a learned critic.",
+      "evidence": "Completed 10k, 100k and 600k hand budgets; both five-player and mixed 4/5/6-player training configurations were tried. Later runs also used game-placement rewards.",
+      "limitations": "Training budget does not identify the selected checkpoint. Chip-reward scores and placement-reward scores use different units and must not share a leaderboard."
+    },
+    {
+      "id": "self_play_ppo",
+      "title": "Self-play PPO",
+      "status": "Paused experiment",
+      "summary": "Train one learner against frozen copies of its policy; refresh the copies after each update. Mixed mode can add historical policies and registered bots.",
+      "evidence": "SELF-PPO is paused at 479,000 of 600,000 hand episodes across 4/5/6 players. Pure self-play was used; mixed self-play is implemented but has no main training job in this snapshot.",
+      "limitations": "Self-play reward alone is not a strength ranking. Validation uses fixed external opponents. The latest saved model and validation-selected best model can differ."
+    },
+    {
+      "id": "grpo",
+      "title": "Group Relative Policy Optimization (GRPO)",
+      "status": "Implemented; no main training run",
+      "summary": "Repeat matched 100-hand games with different learner action samples, compare rewards within each group, and update the policy without a value critic.",
+      "evidence": "Dashboard, training worker, resume/export support and focused tests are present. The audited main database contains zero GRPO jobs.",
+      "limitations": "This is an experimental poker adaptation. A completed training loop or a reward difference within one group would not establish better play."
+    },
+    {
+      "id": "phh_lookup",
+      "title": "PHH data and offline lookup",
+      "status": "Historical prototypes and dashboard import",
+      "summary": "Convert compatible public hand histories into observations; imitate them with BC or build action-frequency tables offline for fast lookup during play.",
+      "evidence": "PHH import is implemented in the dashboard. Separate PHH_Lookup_v1 and six stricter lookup agents were built and compatibility-tested during development.",
+      "limitations": "Standalone tables and data are not bundled. The strict all-source scan retained only six-player Pluribus hands; v1 has direct 4/5/6-player examples. Frequencies are not solved action values."
+    },
+    {
+      "id": "search",
+      "title": "Search: rollouts, ISMCTS and OOS",
+      "status": "Historical prototypes; not bundled",
+      "summary": "Use sampled hidden-card worlds to compare simulated continuations, build an information-set tree, or update an online outcome-sampling strategy.",
+      "evidence": "Search_Rollouts, Search_ISMCTS and Search_OOS were packaged as standalone bots. Each has a saved 180-hand SDK compatibility check across 4/5/6 players.",
+      "limitations": "These are small approximate implementations with limited computation. Compatibility checks do not demonstrate equilibrium play or tournament strength."
+    },
+    {
+      "id": "frozen_ppo_hybrids",
+      "title": "Frozen PPO + lookup + rollouts",
+      "status": "Historical prototypes; not bundled",
+      "summary": "Compare PPO alone, PPO + lookup, PPO + rollouts and PPO + both, keeping PPO weights frozen in every variant.",
+      "evidence": "All four use PPO_5p_600_000_v3. Saved checks report 33 focused tests and 720 SDK hands with legal actions and no bot failures.",
+      "limitations": "No retraining was done. Lookup coverage is sparse and rollout opponents are approximate. These checks do not identify a strongest variant."
+    }
+  ],
+  "history": [
+    {
+      "name": "FirstDatasetV2",
+      "method": "collection",
+      "status": "ready",
+      "date": "2026-10-03",
+      "starting_model": null,
+      "table_sizes": [4, 5, 6],
+      "episodes_completed": 310500,
+      "episodes_target": 300000,
+      "note": "Finished at a complete balanced collection boundary; 2,952,868 teacher decision records."
+    },
+    {
+      "name": "BC_1",
+      "method": "bc",
+      "status": "completed",
+      "date": "2026-10-03",
+      "starting_model": null,
+      "table_sizes": [4, 5, 6],
+      "episodes_completed": null,
+      "episodes_target": null,
+      "note": "10 completed epochs on FirstDatasetV2; best epoch 10. Held-out action agreement 70.83%, an imitation metric."
+    },
+    {
+      "name": "BC_2",
+      "method": "bc",
+      "status": "completed",
+      "date": "2026-10-03",
+      "starting_model": null,
+      "table_sizes": [4, 5, 6],
+      "episodes_completed": null,
+      "episodes_target": null,
+      "note": "Finished early after 76/100 requested epochs; best epoch 75. Held-out action agreement 71.95%, not a poker win rate."
+    },
+    {
+      "name": "PPO-V1",
+      "method": "ppo",
+      "status": "completed",
+      "date": "2026-10-03",
+      "starting_model": "BC_2",
+      "table_sizes": [4, 5, 6],
+      "episodes_completed": 10000,
+      "episodes_target": 10000,
+      "note": "Legacy chip reward. Validation selected iteration 0: the starting BC policy remained best."
+    },
+    {
+      "name": "PPO_5p_100_000_v1",
+      "method": "ppo",
+      "status": "completed",
+      "date": "2026-10-03",
+      "starting_model": "BC_2",
+      "table_sizes": [5],
+      "episodes_completed": 100000,
+      "episodes_target": 100000,
+      "note": "Legacy chip reward; validation-selected iteration 100."
+    },
+    {
+      "name": "PPO_465p_100_000_v1",
+      "method": "ppo",
+      "status": "completed",
+      "date": "2026-10-03",
+      "starting_model": "BC_2",
+      "table_sizes": [4, 5, 6],
+      "episodes_completed": 100000,
+      "episodes_target": 100000,
+      "note": "Original model name retained. Mixed table sizes; validation-selected iteration 55."
+    },
+    {
+      "name": "PPO_5p_600_000_v3",
+      "method": "ppo",
+      "status": "completed",
+      "date": "2026-10-03",
+      "starting_model": "BC_2",
+      "table_sizes": [5],
+      "episodes_completed": 600000,
+      "episodes_target": 600000,
+      "note": "Legacy chip reward; selected iteration 265. This frozen actor is the source for all four PPO/lookup/rollout variants."
+    },
+    {
+      "name": "PPO_456p_600_000_v3",
+      "method": "ppo",
+      "status": "completed",
+      "date": "2026-10-04",
+      "starting_model": "BC_2",
+      "table_sizes": [4, 5, 6],
+      "episodes_completed": 600000,
+      "episodes_target": 600000,
+      "note": "Legacy chip reward; validation-selected iteration 250. Date is local completion date."
+    },
+    {
+      "name": "PPO_5p_1000_000_v3",
+      "method": "ppo",
+      "status": "paused",
+      "date": "2026-10-03",
+      "starting_model": "BC_2",
+      "table_sizes": [5],
+      "episodes_completed": 142000,
+      "episodes_target": 1000000,
+      "note": "Incomplete larger-budget run; best saved iteration 55. Date is local creation date."
+    },
+    {
+      "name": "PPO_456p_1000_000_v3",
+      "method": "ppo",
+      "status": "paused",
+      "date": "2026-10-03",
+      "starting_model": "BC_2",
+      "table_sizes": [4, 5, 6],
+      "episodes_completed": 272000,
+      "episodes_target": 1000000,
+      "note": "Incomplete larger-budget run; best saved iteration 255. Date is local creation date."
+    },
+    {
+      "name": "NEW REWARD BABY",
+      "method": "ppo",
+      "status": "paused",
+      "date": "2026-10-04",
+      "starting_model": "BC_2",
+      "table_sizes": [4, 5, 6],
+      "episodes_completed": 500000,
+      "episodes_target": 600000,
+      "note": "Original name retained. 90% game placement + 10% bounded chip reward; best saved iteration 270."
+    },
+    {
+      "name": "Coba dikit2",
+      "method": "ppo",
+      "status": "completed",
+      "date": "2026-10-04",
+      "starting_model": "BC_2",
+      "table_sizes": [4, 5, 6],
+      "episodes_completed": 50000,
+      "episodes_target": 50000,
+      "note": "Original name retained. Smaller game-placement reward experiment; selected iteration 15."
+    },
+    {
+      "name": "SELF-PPO",
+      "method": "self_play_ppo",
+      "status": "paused",
+      "date": "2026-10-04",
+      "starting_model": "BC_2",
+      "table_sizes": [4, 5, 6],
+      "episodes_completed": 479000,
+      "episodes_target": 600000,
+      "note": "Latest saved training experiment. Pure self-play, game-placement reward, selected iteration 355; no completed final test."
+    }
+  ]
+}

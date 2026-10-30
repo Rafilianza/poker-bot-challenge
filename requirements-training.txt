@@ -1,0 +1,3 @@
+-r requirements.txt
+# For a smaller CPU-only install on Linux/Windows, see docs/SETUP.md first.
+torch==2.14.1

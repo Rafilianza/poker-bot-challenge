@@ -1,0 +1,3 @@
+# Dashboard, SDK games, and the included example agents. Python 3.12.
+macpoker @ https://poker.monashcoding.com/dl/macpoker-0.1.0-py3-none-any.whl#sha256=75904f0d557fff23ab25d8257cac9cd2e32742749c3e8fbd1d2e2fe5bb5e6f4b
+numpy==2.5.3

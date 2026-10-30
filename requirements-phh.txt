@@ -1,0 +1,3 @@
+-r requirements.txt
+# The converter checks this exact replay-engine version.
+pokerkit==0.7.6

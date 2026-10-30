@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-10-11",
+  "scope": "References to collected models and data used during local development. Third-party bot code, pretrained weights, datasets and private run history are not bundled in this release.",
+  "dashboard": {
+    "name": "Poker Bot Challenge Competition",
+    "source_url": null,
+    "license": null,
+    "bundle_status": "included",
+    "note": "Local dashboard for collecting poker agents, training policies and evaluating experiments."
+  },
+  "models": [
+    {
+      "name": "Fullhouse Bot",
+      "author": "Advit Arora (advitrocks9)",
+      "source_url": "https://github.com/advitrocks9/fullhouse-bot/tree/e504793d480b1b975f25258d25939b45c6dbd5a4",
+      "revision": "e504793d480b1b975f25258d25939b45c6dbd5a4",
+      "policy_path": "bot/bot.py",
+      "model_paths": ["data/deep_cfr_model.npz", "data/preflop_equity.npz"],
+      "artifact_sha256": {"data/deep_cfr_model.npz": "1102326b68da95564de147106612df71cb891b42f0726ba0212d3b9a5bcae295", "data/preflop_equity.npz": "6b3b74778854fcebcd3179753c0252392e5f4118e6b623375c98fafa372863b3"},
+      "license": "MIT for upstream-authored code; vendored engine excluded; model/data scope needs separate confirmation",
+      "license_evidence": "Pinned upstream LICENSE and local archived license notice",
+      "bundle_status": "reference_only",
+      "note": "Pretrained Deep CFR policy and preflop data used unchanged locally. Adapter translates chip units, legal actions, features/history, imports and RNG. Do not confuse with Fullhouse Hackathon example bots."
+    },
+    {
+      "name": "Tumbleweed Gunslinger",
+      "author": "Timo Janssen (TimoJanssen1)",
+      "source_url": "https://github.com/TimoJanssen1/tumbleweed/tree/38b701d907b2fe1caf7149c8eedfec5c29b77a77",
+      "revision": "38b701d907b2fe1caf7149c8eedfec5c29b77a77",
+      "policy_path": "bots/gunslinger/bot.py",
+      "upstream_name": "tumbleweeddutch_v24",
+      "license": "MIT",
+      "license_evidence": "Local pinned UPSTREAM.json and archived LICENSE: Copyright (c) 2026 Timo Janssen",
+      "bundle_status": "reference_only",
+      "note": "Rules, Monte Carlo equity and public opponent statistics; no neural weights. Adapter changes chip scaling, street events, self-exclusion, legal actions and state isolation."
+    },
+    {
+      "name": "V16",
+      "author": "lucashsu007-create",
+      "source_url": "https://github.com/lucashsu007-create/fullhouse-hackathon-write-up-repo/tree/8b98ee3efce3b224177609352258dc86db901cce",
+      "revision": "8b98ee3efce3b224177609352258dc86db901cce",
+      "policy_path": "hero_bots/bot_v16_squeeze_C_metacap/bot.py",
+      "upstream_name": "v16_squeeze_C_metacap",
+      "license": "MIT",
+      "license_evidence": "Pinned upstream LICENSE and local archived notice: Copyright (c) 2026 lucashsu007-create",
+      "bundle_status": "reference_only",
+      "note": "Rule-based ranges, opponent statistics and Monte Carlo equity; no neural weights. Adapter translates units/history/actions, isolates state and corrects multiway split-pot credit."
+    },
+    {
+      "name": "Talibus",
+      "author": "Taliwanmli",
+      "source_url": "https://github.com/Taliwanmli/Talibus-Deep-CFR-Poker-AI/tree/1fcdced776e81914c3f9d37ee1606cb8d46c659d",
+      "revision": "1fcdced776e81914c3f9d37ee1606cb8d46c659d",
+      "release": "talibus-6max-longrun-opt-v1",
+      "model_paths": ["artifacts/models/talibus-6max-longrun-opt-v1/strategy_shared_best_ring.onnx"],
+      "artifact_sha256": {"strategy_shared_best_ring.onnx": "b3473f08c0dda9611babaa14f646b2ec5bb0d28b225fc10f599a45b472842af2"},
+      "license": "MIT (upstream repository notice)",
+      "license_evidence": "Pinned upstream LICENSE and local archived notice: Copyright (c) 2026 Taliwanmli",
+      "bundle_status": "reference_only",
+      "note": "Six-player pretrained strategy ONNX used locally without retraining. Python adapter translates the original 510 features and 13 action slots. Upstream Rust real-time search is not included; original training was six-player."
+    },
+    {
+      "name": "GTOBot",
+      "author": "luckyone18/Poker contributors",
+      "source_url": "https://github.com/luckyone18/Poker/blob/c3e4e055ecdcdf40183201ad368fbd7f1e0603d7/bots/gto_bot.py",
+      "revision": "c3e4e055ecdcdf40183201ad368fbd7f1e0603d7",
+      "policy_path": "bots/gto_bot.py: GTOBot",
+      "license": null,
+      "license_evidence": "Local pinned UPSTREAM.json explicitly records no license found at this revision",
+      "bundle_status": "reference_only",
+      "note": "Permission unresolved; do not redistribute this adaptation. Heuristic mixed strategy, not solved GTO. Local port changes evaluator, equity estimator, split-pot accounting, RNG and SDK interface; 100 trials per equity estimate."
+    },
+    {
+      "name": "MonteCarloBot",
+      "author": "luckyone18/Poker contributors",
+      "source_url": "https://github.com/luckyone18/Poker/blob/c3e4e055ecdcdf40183201ad368fbd7f1e0603d7/bots/monte_carlo_bot.py",
+      "revision": "c3e4e055ecdcdf40183201ad368fbd7f1e0603d7",
+      "policy_path": "bots/monte_carlo_bot.py: MonteCarloBot",
+      "license": null,
+      "license_evidence": "Local pinned UPSTREAM.json explicitly records no license found at this revision",
+      "bundle_status": "reference_only",
+      "note": "Permission unresolved; do not redistribute this adaptation. Local port uses eval7, independent RNG, fractional split pots and 200 equity trials; translates SDK observations and legal actions."
+    },
+    {
+      "name": "SmartBot",
+      "author": "luckyone18/Poker contributors",
+      "source_url": "https://github.com/luckyone18/Poker/blob/c3e4e055ecdcdf40183201ad368fbd7f1e0603d7/bots/poker_mind_bot.py",
+      "revision": "c3e4e055ecdcdf40183201ad368fbd7f1e0603d7",
+      "policy_path": "bots/poker_mind_bot.py: SmartBot",
+      "license": null,
+      "license_evidence": "Local pinned UPSTREAM.json explicitly records no license found at this revision",
+      "bundle_status": "reference_only",
+      "note": "Permission unresolved; do not redistribute this adaptation. Local port changes evaluator, equity estimator, split-pot accounting, RNG and SDK interface; 100 equity trials."
+    },
+    {
+      "name": "Fullhouse Aggressor",
+      "author": "Fullhouse Hackathon contributors",
+      "source_url": "https://github.com/mbatv/fullhouse-engine/tree/a80b26957db5f5515d9273a15d1b73aadf8985db/bots/aggressor",
+      "revision": "a80b26957db5f5515d9273a15d1b73aadf8985db",
+      "policy_path": "bots/aggressor",
+      "license": "MIT",
+      "license_evidence": "Pinned upstream LICENSE: Copyright (c) 2026 Fullhouse Hackathon",
+      "bundle_status": "reference_only",
+      "note": "Unchanged upstream decision function with MAC state translation and legal-action clamping. A heuristic example bot, not a neural model."
+    },
+    {
+      "name": "Fullhouse Mathematician",
+      "author": "Fullhouse Hackathon contributors",
+      "source_url": "https://github.com/mbatv/fullhouse-engine/tree/a80b26957db5f5515d9273a15d1b73aadf8985db/bots/mathematician",
+      "revision": "a80b26957db5f5515d9273a15d1b73aadf8985db",
+      "policy_path": "bots/mathematician",
+      "license": "MIT",
+      "license_evidence": "Pinned upstream LICENSE: Copyright (c) 2026 Fullhouse Hackathon",
+      "bundle_status": "reference_only",
+      "note": "Pot-odds calling rule preserved with MAC interface translation. Duplicate ref_bot_2 policy was not a separate collected baseline."
+    },
+    {
+      "name": "Fullhouse Shark",
+      "author": "Fullhouse Hackathon contributors",
+      "source_url": "https://github.com/mbatv/fullhouse-engine/tree/a80b26957db5f5515d9273a15d1b73aadf8985db/bots/shark",
+      "revision": "a80b26957db5f5515d9273a15d1b73aadf8985db",
+      "policy_path": "bots/shark",
+      "license": "MIT",
+      "license_evidence": "Pinned upstream LICENSE: Copyright (c) 2026 Fullhouse Hackathon",
+      "bundle_status": "reference_only",
+      "note": "Preflop and position rules preserved, including documented rank-ordering quirks; MAC interface translation and legal clamping."
+    },
+    {
+      "name": "PyPokerEngine Honest",
+      "author": "ishikota / PyPokerEngine contributors",
+      "source_url": "https://github.com/ishikota/PyPokerEngine/blob/a52a048a15da276005eca4acae96fb6eeb4dc034/examples/players/honest_player.py",
+      "revision": "a52a048a15da276005eca4acae96fb6eeb4dc034",
+      "policy_path": "examples/players/honest_player.py",
+      "license": "MIT",
+      "license_evidence": "Archived LICENSE: Copyright (c) 2016 ishikota; pinned source in PUBLIC_BASELINES.md",
+      "bundle_status": "reference_only",
+      "note": "Call/fold rule based on estimated win probability >= 1/table size. Local evaluator and 128-trial cap replace the original 1,000 simulations; ties counted as wins as upstream."
+    },
+    {
+      "name": "RLCard Rule V1",
+      "author": "DATA Lab at Texas A&M University / RLCard contributors",
+      "source_url": "https://github.com/datamllab/rlcard/blob/d7d0a957baf4cc7225a50522adb0164bf130a9d0/rlcard/models/limitholdem_rule_models.py",
+      "revision": "d7d0a957baf4cc7225a50522adb0164bf130a9d0",
+      "policy_path": "rlcard/models/limitholdem_rule_models.py",
+      "license": "MIT",
+      "license_evidence": "Archived license notice: Copyright (c) 2019 DATA Lab at Texas A&M University; pinned source in PUBLIC_BASELINES.md",
+      "bundle_status": "reference_only",
+      "note": "Original rule class retained with translated card format and legal actions. Fixed-limit raises map to minimum no-limit raises; performance in the original game is not reproduced by this translation."
+    },
+    {
+      "name": "DeepBot Conservative",
+      "author": "cyril (source headers) and tamlhp/deepbot-poker contributors",
+      "source_url": "https://github.com/tamlhp/deepbot-poker/tree/515246b5fa259e7455f8169d28f89a208694dc4c/code/bots",
+      "revision": "515246b5fa259e7455f8169d28f89a208694dc4c",
+      "policy_class": "ConservativeBot",
+      "license": "Apache-2.0",
+      "license_evidence": "Archived LICENSE and local ADAPTATION.md; archived source review reported no upstream NOTICE at the pinned revision",
+      "bundle_status": "reference_only",
+      "note": "Ports the high >= K and low >= J calling rule. No neural weights or Monte Carlo estimator. SDK coerces a free fold to check."
+    },
+    {
+      "name": "DeepBot Maniac",
+      "author": "cyril (source headers) and tamlhp/deepbot-poker contributors",
+      "source_url": "https://github.com/tamlhp/deepbot-poker/tree/515246b5fa259e7455f8169d28f89a208694dc4c/code/bots",
+      "revision": "515246b5fa259e7455f8169d28f89a208694dc4c",
+      "policy_class": "ManiacBot",
+      "license": "Apache-2.0",
+      "license_evidence": "Archived LICENSE and local ADAPTATION.md; archived source review reported no upstream NOTICE at the pinned revision",
+      "bundle_status": "reference_only",
+      "note": "Ports pot-sized aggression on unraised streets and double-pot aggression after a raise, with legal SDK actions. No card-dependent decisions or neural weights."
+    },
+    {
+      "name": "DeepBot Equity",
+      "local_aliases": ["Initial registered snapshot named lil fruit"],
+      "author": "cyril (source headers) and tamlhp/deepbot-poker contributors",
+      "source_url": "https://github.com/tamlhp/deepbot-poker/tree/515246b5fa259e7455f8169d28f89a208694dc4c/code/bots",
+      "revision": "515246b5fa259e7455f8169d28f89a208694dc4c",
+      "policy_class": "EquityBot",
+      "license": "Apache-2.0",
+      "license_evidence": "Archived LICENSE and local ADAPTATION.md; archived source review reported no upstream NOTICE at the pinned revision",
+      "bundle_status": "reference_only",
+      "note": "Ports thresholds 1/n, 1.2/n, 1.4/n and 1.6/n. Local 100-trial equity estimator replaces native OMPEval and gives fractional split-pot credit. Alias applies only to the inspected original snapshot, not later similarly named variants."
+    },
+    {
+      "name": "DeepBot Candid",
+      "author": "cyril (source headers) and tamlhp/deepbot-poker contributors",
+      "source_url": "https://github.com/tamlhp/deepbot-poker/tree/515246b5fa259e7455f8169d28f89a208694dc4c/code/bots",
+      "revision": "515246b5fa259e7455f8169d28f89a208694dc4c",
+      "policy_class": "CandidBot",
+      "license": "Apache-2.0",
+      "license_evidence": "Archived LICENSE and local ADAPTATION.md; archived source review reported no upstream NOTICE at the pinned revision",
+      "bundle_status": "reference_only",
+      "note": "Ports equity-to-the-seventh-power sizing, branch order and two-raise gate. Replaces native equity calculation with 100 local trials; translates SDK contributions and legal actions."
+    },
+    {
+      "name": "DeepBot PStrat",
+      "author": "cyril (source headers) and tamlhp/deepbot-poker contributors",
+      "source_url": "https://github.com/tamlhp/deepbot-poker/tree/515246b5fa259e7455f8169d28f89a208694dc4c/code/bots",
+      "revision": "515246b5fa259e7455f8169d28f89a208694dc4c",
+      "policy_class": "PStratBot",
+      "license": "Apache-2.0",
+      "license_evidence": "Archived LICENSE and local ADAPTATION.md; archived source review reported no upstream NOTICE at the pinned revision",
+      "bundle_status": "reference_only",
+      "note": "Ports range, position, stack and sizing rules while retaining documented upstream quirks. SDK evaluator, street-total action mapping and aggregate-pot semantics replace source engine behavior."
+    }
+  ],
+  "datasets": [
+    {
+      "name": "Poker Hand Histories (PHH dataset)",
+      "author": "Universal, Open, Free, and Transparent Computer Poker Research Group",
+      "source_url": "https://github.com/uoftcprg/phh-dataset/tree/e47fbd5816372360bade4de5d712346fe1bb70f6",
+      "revision": "e47fbd5816372360bade4de5d712346fe1bb70f6",
+      "archive_url": "https://doi.org/10.5281/zenodo.10796885",
+      "license": "MIT (repository notice)",
+      "license_evidence": "Local LICENSE: Copyright (c) 2024-2025 Universal, Open, Free, and Transparent Computer Poker Research Group",
+      "bundle_status": "reference_only",
+      "note": "The collection credits HandHQ, Pluribus histories published with Brown and Sandholm (2019), televised WSOP hands and historical sources. GitHub and full Zenodo release contents differ. Local lookup/BC data are derived subsets; record actual source split and retain dataset attribution. Pluribus histories are not original Pluribus code or weights."
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "macpoker",
+      "author": "MAC poker tournament organizers",
+      "source_url": "https://poker.monashcoding.com/dl/macpoker-0.1.0-py3-none-any.whl",
+      "documentation_url": "https://docs.poker.monashcoding.com",
+      "version": "0.1.0",
+      "artifact_sha256": "75904f0d557fff23ab25d8257cac9cd2e32742749c3e8fbd1d2e2fe5bb5e6f4b",
+      "previous_development_wheel_sha256": "f816cef6e828650d4b035e3c11238484b19f341e4c3eb52d5103ab4a480772cc",
+      "license": "MIT (installed package metadata)",
+      "bundle_status": "external_dependency",
+      "note": "Official game engine, bot API, protocol runner and house bots. Installed separately; no SDK source or wheel is vendored. The same-version official wheel was replaced: compared with the prior development install, only cli.py and hand.py change the maximum seat count from nine to ten and matching help/docstrings. Other Python source files match byte-for-byte. Pin the artifact hash as well as version."
+    }
+  ],
+  "local_artifacts": [
+    {
+      "name": "PPO_5p_600_000_v3",
+      "source_url": null,
+      "artifact_sha256": "8de38bba8e550fbfa18a67195ecb32d7acc821363216d851645451e9d477168c",
+      "weights_sha256": "212d13bea904f153859aa03889b29512fb5e71bf96d782edd465efcd9f988e75",
+      "bundle_status": "reference_only",
+      "note": "Local frozen actor shared by PPO Alone, PPO + lookup, PPO + rollouts, and PPO + lookup + rollouts. Checksum identifies bytes; complete teacher/data lineage and redistribution terms need a model card before model publication."
+    }
+  ]
+}

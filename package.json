@@ -1,0 +1,15 @@
+{
+  "name": "poker-arena-browser-checks",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Optional browser checks for the local Poker Arena dashboard",
+  "scripts": {
+    "test": "node scripts/browser_check.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "playwright": "1.64.0"
+  }
+}

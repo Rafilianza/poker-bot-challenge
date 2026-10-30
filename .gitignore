@@ -1,0 +1,36 @@
+# Local environments and generated Python files
+.venv*/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+node_modules/
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+
+# Private runs, uploaded agents, histories, and external datasets
+arena/data/
+arena/validation/
+arena/exports/
+external/
+local-data/
+backups/
+*.sqlite*
+*.db
+*.log
+*.pt
+*.pth
+*.onnx
+*.npz
+*.zip
+*.7z
+*.jsonl
+*.jsonl.gz
+test-results/
+playwright-report/
+
+# Editor state
+.idea/
+.vscode/

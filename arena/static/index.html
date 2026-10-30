@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Poker Bot Challenge Competition</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2355e0b0'/%3E%3Ctext x='16' y='25' text-anchor='middle' font-size='27' fill='%2309271f'%3E%E2%99%A0%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script src="workspace.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="lab.js" defer></script>
+  <script src="ppo.js" defer></script>
+  <script src="grpo.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Skip to content</a>
+  <aside class="sidebar">
+    <a class="brand" href="#overview" aria-label="Poker Bot Challenge Competition"><span class="brand-mark" aria-hidden="true">♠</span><span class="brand-name">Poker Bot<span class="brand-sub">Challenge Competition</span></span></a>
+    <div class="nav-label">YOUR WORKSPACE</div>
+    <nav class="main-navigation" aria-label="Main navigation">
+      <a href="#overview"><span class="nav-icon" aria-hidden="true">◈</span><span>Overview</span></a>
+      <a href="#models"><span class="nav-icon" aria-hidden="true">♧</span><span>Model library</span></a>
+      <a href="#data"><span class="nav-icon" aria-hidden="true">▦</span><span>Data</span></a>
+      <a href="#training"><span class="nav-icon" aria-hidden="true">↗</span><span>Training</span></a>
+      <a href="#evaluate"><span class="nav-icon" aria-hidden="true">▥</span><span>Evaluate</span></a>
+      <a href="#experiments"><span class="nav-icon" aria-hidden="true">◷</span><span>Experiments</span></a>
+    </nav>
+    <div class="sidebar-note"><span class="eyebrow">ONE BOT, EVERY TABLE</span><p>Collect. Learn. Compare.</p><span class="muted">4, 5 or 6 players includes your bot.</span><a href="#sources" class="sidebar-source-link">Sources & author credits ↗</a></div>
+  </aside>
+  <main id="workspace" tabindex="-1">
+    <header class="topbar"><span>Research workspace <span class="muted">/</span> <span id="view-breadcrumb">Overview</span></span><span id="connection" class="connection" role="status">Connecting…</span></header>
+    <div class="page-heading"><div><p class="eyebrow" id="view-eyebrow">FROM IDEA TO EVIDENCE</p><h1 id="view-title" tabindex="-1">Build a bot. Test what works.</h1><p class="muted" id="view-description">A local workspace for reproducible poker experiments.</p></div><a class="button primary" href="#launch">New evaluation <span aria-hidden="true">↗</span></a></div>
+    <div id="ppo-development-notice" class="notice ppo-development-notice" role="status" hidden><strong>CPU preview workspace.</strong> Experiments and copied snapshots are saved in this workspace.</div>
+    <div id="state-error" class="notice error" role="alert" hidden></div>
+    <noscript><p class="notice error">Enable JavaScript to navigate the dashboard and manage local experiments.</p></noscript>
+    <section id="overview" class="workspace-view" aria-label="Overview">
+      <div class="overview-grid">
+        <article class="panel welcome-panel">
+          <p class="eyebrow">START WITH A SMALL EXPERIMENT</p>
+          <h2>A clear path from model to result.</h2>
+          <p>Register a bot, run a short evaluation, then decide what to improve. The research history documents earlier experiments; your own jobs start here.</p>
+          <ol class="onboarding-list">
+            <li><span>01</span><div><strong>Add an agent</strong><p>Upload your own bot or a Python example from the repository’s <code>examples/</code> folder.</p></div></li>
+            <li><span>02</span><div><strong>Check that it plays</strong><p>Select it in the model library, then run a 10-hand benchmark against the house bots.</p></div></li>
+            <li><span>03</span><div><strong>Compare with fresh seeds</strong><p>Use the same opponents, seeds and settings for every candidate. Inspect each table size.</p></div></li>
+          </ol>
+          <a class="button secondary" href="#models">Open model library <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="panel research-highlight" aria-labelledby="research-title">
+          <div class="panel-heading"><p class="eyebrow">LATEST RESEARCH SNAPSHOT</p><span class="tag">PUBLISHED HISTORY</span></div>
+          <div id="research-current"><h2 id="research-title">Loading experiment history…</h2><p class="muted">Saved development history is separate from jobs on this installation.</p></div>
+          <a class="text-button" href="#experiments">Explore methods & history →</a>
+        </article>
+      </div>
+      <section class="panel pipeline-panel" aria-labelledby="pipeline-title">
+        <div class="panel-heading"><div><p class="eyebrow">HOW THE PIECES CONNECT</p><h2 id="pipeline-title">The experiment pipeline</h2></div><span class="tag">ALTERNATIVE PATHS, ONE EVALUATION</span></div>
+        <div class="pipeline-grid">
+          <a class="pipeline-step" href="#models"><span class="step-number">01 / BASELINES</span><h3>Collect models</h3><p>Existing bots become baselines, opponents or teachers. Keep their original author and source.</p><span class="step-output">Output: registered agents</span></a>
+          <a class="pipeline-step" href="#datasets"><span class="step-number">02 / DEMONSTRATIONS</span><h3>Record decisions</h3><p>Collect visible states and teacher actions, or import poker hand histories.</p><span class="step-output">Output: a dataset</span></a>
+          <a class="pipeline-step" href="#training"><span class="step-number">03 / LEARNING PATHS</span><h3>Imitate, then improve</h3><p>Behaviour cloning learns from demonstrations. From BC, choose PPO, self-play PPO or GRPO.</p><span class="step-output">Output: an exported bot</span></a>
+          <a class="pipeline-step" href="#evaluate"><span class="step-number">04 / EVIDENCE</span><h3>Evaluate fairly</h3><p>Compare frozen versions with matching settings and fresh seeds at 4, 5 and 6 players.</p><span class="step-output">Output: comparable results</span></a>
+        </div>
+        <p class="profile-note pipeline-note"><strong>Another branch:</strong> lookup tables and gameplay search can be added to a frozen policy without retraining. These are documented experiments; import an exported agent to evaluate it here.</p>
+      </section>
+      <div class="section-label"><h2>This installation</h2><span class="muted small">Live local activity · independent of the published snapshot</span></div>
+    <section class="stats" aria-label="Workspace statistics">
+      <article class="stat"><span>Registered agents</span><strong id="stat-agents">—</strong><small>Ready for the next experiment</small></article>
+      <article class="stat"><span>Active & queued</span><strong id="stat-active">—</strong><small>Persistent local run queue</small></article>
+      <article class="stat"><span>Completed runs</span><strong id="stat-complete">—</strong><small>Saved evaluation runs</small></article>
+      <article class="stat accent"><span>Benchmark hands</span><strong id="stat-hands">—</strong><small>Across the leaderboard profile</small></article>
+    </section>
+
+      <section class="panel" aria-labelledby="local-activity-title"><div class="panel-heading"><h2 id="local-activity-title">Active jobs</h2><a class="text-button" href="#queue">Evaluation history →</a></div><div id="workspace-activity" aria-live="polite"><p class="muted">Connecting to your local jobs…</p></div></section>
+    </section>
+    <section id="models" class="workspace-view" aria-label="Model library" hidden>
+      <div class="view-intro notice">Register executable agents here. Select agents for evaluation, then <a href="#launch">configure a run →</a> <strong id="library-selection-count">0 selected</strong></div>
+      <section class="panel" id="agents">
+        <div class="panel-heading"><div><p class="eyebrow">BUILD YOUR ROSTER</p><h2>Your registered agents</h2></div><span id="agent-count" class="tag">0 agents</span></div>
+        <form id="upload-form">
+          <label>Agent name / batch prefix <span class="muted">(optional)</span><input id="agent-name" maxlength="160" placeholder="e.g. river-v3"></label>
+          <label class="file-zone"> <span class="upload-icon">↥</span><strong>Add your agents</strong><span class="muted">Choose multiple .py or .zip files</span><input id="agent-files" type="file" accept=".py,.zip" multiple required></label>
+          <div id="file-preview" class="muted small">Each file is registered as a separate agent.</div>
+          <button class="button secondary" id="upload-button" type="submit">Register agents</button>
+          <div id="upload-status" class="small" role="status" aria-live="polite"></div>
+        </form>
+        <div class="roster-heading"><h3>Select agents for evaluation</h3><div><button id="select-all" class="text-button" type="button">Select all</button><button id="select-none" class="text-button" type="button">Clear</button></div></div>
+        <div id="agent-list" class="agent-list"></div>
+      </section>
+
+      <section class="panel" id="sources" aria-labelledby="sources-title"><div class="panel-heading"><div><p class="eyebrow">PROVENANCE MATTERS</p><h2 id="sources-title">Collected models & author credits</h2></div><span class="tag">REFERENCE CATALOGUE</span></div><p class="profile-note">These entries document models explored during development. They are not automatically installed or bundled. Follow the original source and its licence before downloading or redistributing a model.</p><div id="model-sources"><p class="muted">Loading source catalogue…</p></div></section>
+    </section>
+    <section id="data" class="workspace-view" aria-label="Data" hidden>
+      <div class="view-intro notice"><strong>Before collecting:</strong> register enough bots for your chosen table sizes. Choose which bots teach, then record their decisions. A hand may produce many decisions.</div>
+    <section class="panel lab-panel" id="datasets">
+      <div class="panel-heading"><div><p class="eyebrow">01 / COLLECT DEMONSTRATIONS</p><h2>Datasets</h2></div><a class="button secondary" href="#cloning">Train a student →</a></div>
+      <p class="profile-note">One episode is one poker hand, counted once for the whole table. Each episode saves all selected teachers’ decisions, so it can create several training records. Collection finishes balanced batches at the selected table sizes and collects at least three valid seed groups for separate training, validation and test data.</p>
+      <div id="lab-error" class="notice error" role="alert" hidden></div>
+      <div class="lab-columns">
+        <form id="dataset-form">
+          <label>Dataset name<input id="dataset-name" maxlength="100" placeholder="e.g. mixed-bots-v1" required></label>
+          <div class="form-columns"><label>Target episodes<input id="dataset-target" type="number" min="1" max="100000000" step="1" value="100000" required><small class="muted">1 episode = 1 hand for the whole table, including all selected teachers.</small></label><label>Hands per game<input id="dataset-deals" type="number" min="1" max="1000" step="1" value="100" required><small class="muted">One game contains this many episodes. Decisions per episode vary.</small></label></div>
+          <fieldset><legend>Table sizes to collect</legend><div class="size-options"><label><input name="dataset-size" type="checkbox" value="4" checked>4 players</label><label><input name="dataset-size" type="checkbox" value="5" checked>5 players</label><label><input name="dataset-size" type="checkbox" value="6" checked>6 players</label></div></fieldset>
+          <div class="form-columns"><label>Seed prefix<input id="dataset-seed" maxlength="80" placeholder="Automatic fresh prefix"><small class="muted">Leave blank for fresh deals in each collection.</small></label><label>Storage limit (GB)<input id="dataset-storage" type="number" min="0.1" max="1000" step="0.01" value="10" required><small class="muted">Compressed decisions only; downloads and training need extra space.</small></label></div>
+          <div class="notice" id="dataset-estimate" role="status">Choose at least six entrants to collect all table sizes.</div>
+          <button id="dataset-create" class="button primary full" type="submit">Start collection <span>→</span></button>
+          <div id="dataset-status" class="small" role="status" aria-live="polite"></div>
+        </form>
+        <div>
+          <div class="teacher-heading"><h3>Bots playing</h3><div><button id="dataset-agents-all" class="text-button" type="button">Select all</button><button id="dataset-agents-none" class="text-button" type="button">Clear</button></div></div>
+          <p class="small muted">Entrants play as opponents. Select which entrants also provide demonstrations below.</p>
+          <div id="dataset-agent-list" class="lab-choice-list" aria-label="Dataset entrants"></div>
+          <div class="teacher-heading lab-subheading"><h3>Teachers to record</h3><div><button id="dataset-teachers-all" class="text-button" type="button">Select all</button><button id="dataset-teachers-none" class="text-button" type="button">Clear</button></div></div>
+          <p class="small muted">Always-fold, always-all-in and scaffold baselines are not selected as teachers automatically. You can choose them explicitly.</p>
+          <div id="dataset-teacher-list" class="lab-choice-list" aria-label="Dataset teachers"></div>
+        </div>
+      </div>
+      <section id="phh-import" class="detail-section phh-import" aria-labelledby="phh-heading" hidden>
+        <div class="teacher-heading"><h3 id="phh-heading">Import PHH</h3><span class="tag">POKER HAND HISTORIES</span></div>
+        <p class="small muted">Turn saved poker hands into a dataset for Behaviour Cloning. The source files are read only; imported decisions are saved in this workspace.</p>
+        <form id="phh-form">
+          <label>Source folder<input id="phh-source" placeholder="Path to your local phh-dataset folder" required><small class="muted">Use the dataset root for Pluribus, or choose “Selected folder” to import a specific folder.</small></label>
+          <div class="form-columns">
+            <label>Dataset name<input id="phh-name" maxlength="100" placeholder="e.g. pluribus-demonstrations" required></label>
+            <label>Collection<select id="phh-collection"><option value="pluribus">Pluribus (recommended)</option><option value="folder">Selected folder</option></select></label>
+          </div>
+          <div class="form-columns">
+            <label>Teacher name<input id="phh-teacher" value="Pluribus" placeholder="Blank = all known players"><small class="muted">Leave blank to include all known players.</small></label>
+            <label>Maximum hands<input id="phh-max-hands" type="number" min="1" step="1" value="10000" required><small class="muted">Maximum source hands to process. Preview checks at most 100 hands.</small></label>
+          </div>
+          <label class="training-toggle"><input id="phh-profitable" type="checkbox"><span><strong>Profitable hands only</strong><small class="muted">Optional · off by default. Keep a teacher’s decisions only when their net chip result is positive, rather than merely winning a pot. This excludes useful examples such as good folds and introduces outcome bias.</small></span></label>
+          <div class="run-tools"><button id="phh-preview-button" class="button secondary" type="button">Preview up to 100 hands</button><button id="phh-import-button" class="button primary" type="submit">Import PHH</button></div>
+          <div id="phh-status" class="small" role="status" aria-live="polite"></div>
+          <div id="phh-preview" class="notice" aria-label="PHH preview results" hidden></div>
+        </form>
+      </section>
+      <details class="raw lab-import"><summary>Import a recorded arena run</summary><form id="dataset-import-form"><div class="form-columns"><label>Completed recorded run<select id="dataset-import-run"><option value="">No recorded runs available</option></select></label><label>Imported dataset name<input id="dataset-import-name" maxlength="100" placeholder="e.g. table-study-demonstrations" required></label></div><button class="button secondary" id="dataset-import-button" type="submit">Add run to dataset library</button><div id="dataset-import-status" class="small" role="status" aria-live="polite"></div></form></details>
+      <div class="lab-library-heading"><h3>Dataset library & jobs</h3><span class="muted small" id="dataset-library-count">Loading…</span></div>
+      <div id="dataset-library"></div>
+    </section>
+
+    </section>
+    <section id="training" class="workspace-view" aria-label="Training" hidden>
+      <div class="method-navigation" aria-label="Training methods">
+        <a href="#cloning">Behaviour cloning <small>Learn from demonstrations</small></a>
+        <a href="#ppo">PPO / self-play PPO <small>Improve through rewards</small></a>
+        <a href="#grpo">GRPO <small>Compare matched attempts</small></a>
+      </div>
+      <p class="view-intro small muted">Start with a completed dataset and train a BC student. PPO and GRPO each begin from a completed BC checkpoint. Self-play is a training mode within PPO.</p>
+    <section class="panel lab-panel" id="cloning">
+      <div class="panel-heading"><div><p class="eyebrow">02 / LEARN FROM YOUR TEACHERS</p><h2>Behaviour Cloning</h2></div><span class="tag emerald">LOCAL TRAINING</span></div>
+      <p class="profile-note">Train a small student model on saved observations and actions. Multiple teachers teach a mixture of behaviours; cloning does not automatically pick their best decisions. Related seed groups stay together in the training, validation or test split.</p>
+      <div id="lab-cloning-error" class="notice error" role="alert" hidden></div>
+      <div class="lab-columns">
+        <form id="cloning-form">
+          <label>Student name<input id="cloning-name" maxlength="100" placeholder="e.g. mixed-student-v1" required></label>
+          <div class="form-columns"><label>Epochs<input id="cloning-epochs" type="number" min="1" max="200" step="1" value="10" required></label><label>Batch size<input id="cloning-batch" type="number" min="16" max="8192" step="1" value="256" required></label></div>
+          <div class="form-columns"><label>Learning rate<input id="cloning-rate" type="number" min="0.000001" max="0.1" step="any" value="0.001" required></label><label>Training device<select id="cloning-device" aria-describedby="cloning-device-note"><option value="auto">Automatic · detect available GPU</option><option value="cpu">CPU</option><option value="mps">Apple GPU (MPS)</option><option value="cuda">NVIDIA GPU (CUDA)</option></select><small id="cloning-device-note" class="muted" hidden>This separate workspace uses CPU to leave the main training GPU available.</small></label></div>
+          <fieldset><legend>Table sizes to learn from</legend><div class="size-options"><label><input name="cloning-size" type="checkbox" value="4" checked>4 players</label><label><input name="cloning-size" type="checkbox" value="5" checked>5 players</label><label><input name="cloning-size" type="checkbox" value="6" checked>6 players</label></div></fieldset>
+          <label class="training-toggle"><input id="cloning-balanced" type="checkbox" checked><span><strong>Balance teacher and table-size contributions</strong><small class="muted">Reduce the influence of teachers or table sizes with more recorded decisions. Optional teacher weights adjust this balance.</small></span></label>
+          <div id="cloning-estimate" class="notice" role="status">Choose a completed dataset and at least one teacher.</div>
+          <button id="cloning-create" class="button primary full" type="submit">Train student <span>→</span></button>
+          <div id="cloning-status" class="small" role="status" aria-live="polite"></div>
+        </form>
+        <div>
+          <div class="teacher-heading"><h3>Saved datasets</h3><div><a id="phh-shortcut" class="text-button" href="#phh-import" hidden>Import PHH</a><a class="text-button" href="#datasets">Collect more</a></div></div>
+          <p class="small muted">Only finished datasets are selectable. Select several to combine demonstrations; duplicate records are removed. Training needs at least three independent seed groups across the selected datasets.</p>
+          <div id="cloning-dataset-list" class="lab-choice-list" aria-label="Training datasets"></div>
+          <div class="teacher-heading lab-subheading"><h3>Teacher filters & weights</h3><div><button id="cloning-teachers-all" class="text-button" type="button">Select all</button><button id="cloning-teachers-none" class="text-button" type="button">Clear</button></div></div>
+          <p class="small muted">Weight 1 gives the normal contribution. Higher weights emphasize a teacher; uncheck a teacher to exclude it.</p>
+          <div id="cloning-teacher-list" class="lab-choice-list" aria-label="Training teachers"></div>
+        </div>
+      </div>
+      <div class="lab-library-heading"><h3>Students & training jobs</h3><span id="cloning-job-count" class="muted small">Loading…</span></div>
+      <div id="cloning-jobs"></div>
+      <p class="profile-note lab-end-note">After training, create the agent and evaluate it in the arena against your existing bots using fresh seeds. Action agreement measures imitation; poker results measure playing strength.</p>
+    </section>
+    <section class="panel lab-panel" id="ppo">
+      <div class="panel-heading"><div><p class="eyebrow">03 / LEARN THROUGH PLAY</p><h2>PPO training</h2></div><span class="tag emerald">FROM A BC CHECKPOINT</span></div>
+      <p class="profile-note">Start from a completed Behaviour Cloning student, then improve its policy through poker rewards. Train against registered bots, copies of the learner, or a mixture. One episode is one table hand with one learner. Evaluation hands are separate from the training episode target.</p>
+      <p id="ppo-history-shortcut" class="notice" hidden><a href="#ppo-live-section">View saved PPO / self-play reward graphs →</a></p>
+      <div id="ppo-error" class="notice error" role="alert" hidden></div>
+      <div class="lab-columns">
+        <form id="ppo-form">
+          <label>New agent name<input id="ppo-name" maxlength="100" placeholder="e.g. mixed-student-ppo-v1" required></label>
+          <label>Starting BC checkpoint<select id="ppo-source" required><option value="">Loading BC checkpoints…</option></select><small class="muted">Uses the completed student's best validation snapshot. Its original BC checkpoint is preserved.</small></label>
+          <div id="ppo-source-detail" class="notice" role="status">Choose a completed BC checkpoint.</div>
+          <fieldset>
+            <legend>Who should the agent train against?</legend>
+            <label>Training mode<select id="ppo-training-mode"><option value="bots" selected>Existing bots</option><option value="self_play" disabled>Self-play · copies of the learner</option><option value="mixed" disabled>Mixed self-play · current, past and registered bots</option></select></label>
+            <p id="ppo-training-mode-note" class="small muted">Train against the registered bots selected below. The same fixed pool supplies validation opponents.</p>
+            <div id="ppo-self-play-history" class="form-columns" hidden>
+              <label>Recent historical versions<input id="ppo-history-limit" type="number" min="1" max="20" step="1" value="5" disabled><small class="muted">Keep this many recent versions, plus the initial BC policy.</small></label>
+              <label>Save a version every N PPO iterations<input id="ppo-history-interval" type="number" min="1" max="1000" step="1" value="5" disabled><small class="muted">These copies become opponents for later training rollouts.</small></label>
+            </div>
+            <p id="ppo-self-play-note" class="small muted" hidden>4 players = learner + 3 copies; 5 players = learner + 4; 6 players = learner + 5. Copies use identical weights with independent cards, histories and random action choices. They refresh after each PPO iteration and remain fixed during a rollout. Only the learner supplies training decisions; its seat rotates.</p>
+            <p id="ppo-self-play-measurement" class="notice" hidden>Self-play chip profit can stay near zero while both sides improve. Fixed external opponents measure playing strength and select the best saved policy in every mode.</p>
+          </fieldset>
+          <fieldset>
+            <legend>What should the agent learn to maximize?</legend>
+            <label>Training reward<select id="ppo-reward-mode"><option value="game_placement" selected>Placement + chip profit</option><option value="chips">Chip profit per hand · legacy</option></select></label>
+            <label>Placement weight (%)<input id="ppo-placement-weight" type="number" min="50" max="100" step="1" value="90" required><small class="muted">The remaining weight rewards chip profit. Both components have the same bounded scale.</small></label>
+            <p id="ppo-reward-note" class="small muted">Train on placement after each full 100-hand game. Validation uses the competition's duplicate-round placement, with the same small chip-profit component.</p>
+            <p class="small muted">Competition standings use round-placement points across four rounds. This training objective targets game placement; validation measures the duplicate-round step. <a href="https://docs.poker.monashcoding.com/game-format/scoring/" target="_blank" rel="noopener">Official scoring rules</a></p>
+          </fieldset>
+          <div class="form-columns"><label>Training episodes<input id="ppo-target" type="number" min="1" max="10000000" step="1" value="10000" required><small class="muted">1 episode = 1 poker hand for the whole table.</small></label><label>Training device<select id="ppo-device"><option value="auto">Automatic · detect available GPU</option><option value="cpu">CPU</option><option value="mps">Apple GPU (MPS)</option><option value="cuda">NVIDIA GPU (CUDA)</option></select><small id="ppo-device-note" class="muted" hidden>This test workspace uses CPU so the main training GPU remains available.</small></label></div>
+          <fieldset><legend>Table sizes</legend><div class="size-options"><label><input name="ppo-size" type="checkbox" value="4" checked>4 players</label><label><input name="ppo-size" type="checkbox" value="5" checked>5 players</label><label><input name="ppo-size" type="checkbox" value="6" checked>6 players</label></div></fieldset>
+          <details class="raw ppo-advanced"><summary>Advanced training and evaluation settings</summary>
+            <div class="form-columns">
+              <label>Episodes per rollout<input id="ppo-rollout" type="number" min="1" max="10000" step="1" value="1000" required><small class="muted">Collect this many hands before updating the policy.</small></label>
+              <label>Update passes per rollout<input id="ppo-update-epochs" type="number" min="1" max="20" step="1" value="4" required></label>
+              <label>Batch size<input id="ppo-batch" type="number" min="16" max="8192" step="1" value="256" required></label>
+              <label>Policy learning rate<input id="ppo-learning-rate" type="number" min="0.000001" max="0.01" step="any" value="0.0001" required></label>
+              <label>Value learning rate<input id="ppo-critic-rate" type="number" min="0.000001" max="0.01" step="any" value="0.001" required></label>
+              <label>Clip ratio<input id="ppo-clip" type="number" min="0.01" max="0.5" step="any" value="0.2" required><small class="muted">Limits the size of each policy update.</small></label>
+              <label>Entropy weight<input id="ppo-entropy" type="number" min="0" max="1" step="any" value="0.01" required><small class="muted">Encourages exploration during training.</small></label>
+              <label>BC anchor weight<input id="ppo-bc-weight" type="number" min="0" max="10" step="any" value="0.02" required><small class="muted">Discourages moving too far from the starting policy.</small></label>
+              <label>Target KL<input id="ppo-kl" type="number" min="0.001" max="0.5" step="any" value="0.02" required><small class="muted">Stops an update early when the policy changes too much.</small></label>
+              <label>GAE lambda<input id="ppo-gae" type="number" min="0" max="1" step="any" value="1" required><small class="muted">Placement mode uses 1 so the complete game's reward reaches every decision. Reward discount is fixed at 1.</small></label>
+              <label>Evaluate every N rollouts<input id="ppo-eval-interval" type="number" min="1" max="1000" step="1" value="5" required></label>
+              <label>Evaluation hands per game<input id="ppo-eval-hands" type="number" min="1" max="100" step="1" value="100" required></label>
+              <label>Evaluation seeds<input id="ppo-eval-seeds" type="number" min="1" max="20" step="1" value="5" required><small class="muted">More independent seed groups improve comparison reliability and take longer.</small></label>
+              <label>Random seed<input id="ppo-seed" type="number" min="0" max="2147483647" step="1" value="42" required></label>
+            </div>
+          </details>
+          <fieldset class="ppo-milestone-settings">
+            <legend>Milestone evaluations</legend>
+            <label class="training-toggle"><input id="ppo-milestones-enabled" type="checkbox" checked><span>Save and evaluate milestone policies<small class="muted">Compare the starting BC policy and saved PPO policies at 4-, 5- and 6-player tables.</small></span></label>
+            <div id="ppo-milestone-inputs" class="form-columns">
+              <label>Every N training episodes<input id="ppo-milestone-interval" type="number" min="1" max="10000000" step="1" value="50000" required></label>
+              <label>Hands per evaluation game<input id="ppo-milestone-hands" type="number" min="1" max="1000" step="1" value="100" required></label>
+              <label>Evaluation seed groups<input id="ppo-milestone-seeds" type="number" min="1" max="20" step="1" value="3" required></label>
+            </div>
+            <p class="small muted">Policies are saved at exact milestone episode counts. A rollout may be shortened to reach a boundary. Placement mode keeps complete 100-hand games. Milestone results and training validation are separate comparisons.</p>
+          </fieldset>
+          <div id="ppo-estimate" class="notice" role="status">Choose a completed checkpoint and at least five opponents for all table sizes.</div>
+          <button id="ppo-create" class="button primary full" type="submit">Start PPO training <span>→</span></button>
+          <div id="ppo-status" class="small" role="status" aria-live="polite"></div>
+        </form>
+        <div>
+          <div class="teacher-heading"><h3 id="ppo-opponent-heading">Training + benchmark opponents</h3><div><button id="ppo-opponents-all" class="text-button" type="button">Select all</button><button id="ppo-opponents-none" class="text-button" type="button">Clear</button></div></div>
+          <p id="ppo-opponent-note" class="small muted">Select registered bots for training and fixed validation. Milestones require at least five distinct opponents for 4-, 5- and 6-player tables. With milestones off, choose enough to fill your selected table sizes.</p>
+          <div id="ppo-opponent-list" class="lab-choice-list ppo-opponent-list" aria-label="PPO opponents"></div>
+          <div class="detail-section ppo-explanation">
+            <h3>Training best and milestone best</h3>
+            <p><strong>Training best</strong> follows the job's objective. Placement mode selects the weighted duplicate-round placement and chip score; legacy mode selects bb/100. The initial BC policy can remain best.</p>
+            <p><strong>Milestone best</strong> compares the separate milestone evaluations. Game placement and duplicate-round placement are shown separately. Download a saved policy while a local job is running, paused or completed.</p>
+            <p>A separate held-out test is run on the selected policy after training. Compare poker results in big blinds per 100 hands (bb/100); PPO loss alone does not measure playing strength.</p>
+            <p class="muted">Pause preserves completed iterations. An unfinished iteration is replayed when you resume.</p>
+          </div>
+        </div>
+      </div>
+      <div class="lab-library-heading"><h3>PPO agents & training jobs</h3><span id="ppo-job-count" class="muted small">Loading…</span></div>
+      <div id="ppo-jobs"></div>
+      <section id="ppo-live-section" class="ppo-live-section" aria-labelledby="ppo-live-title" hidden>
+        <div class="lab-library-heading"><h3 id="ppo-live-title">Saved PPO / self-play training history</h3><span id="ppo-live-count" class="muted small"></span></div>
+        <p class="notice">Real recorded results from your original dashboard, viewed read-only. Each run keeps its saved status and reward definition. Viewing these graphs does not resume training or copy weights.</p>
+        <div id="ppo-live-jobs"></div>
+      </section>
+    </section>
+    <section class="panel lab-panel" id="grpo">
+      <div class="panel-heading"><div><p class="eyebrow">ALTERNATIVE / LEARN FROM MATCHED ATTEMPTS</p><h2>GRPO training</h2></div><span class="tag emerald">FROM A BC CHECKPOINT</span></div>
+      <p class="profile-note">Start from a completed Behaviour Cloning checkpoint and compare several attempts at the same game. GRPO learns from relative rewards within each group without a value critic. One episode is one table hand. This is a separate experiment; use held-out poker results to compare it with PPO.</p>
+      <div id="grpo-development-notice" class="notice ppo-development-notice" role="status" hidden><strong>CPU preview workspace.</strong> GRPO experiments and saved snapshots stay in this preview.</div>
+      <div id="grpo-error" class="notice error" role="alert" hidden></div>
+      <div class="lab-columns">
+        <form id="grpo-form">
+          <label>New agent name<input id="grpo-name" maxlength="100" placeholder="e.g. mixed-student-grpo-v1" required></label>
+          <label>Starting BC checkpoint<select id="grpo-source" required><option value="">Loading BC checkpoints…</option></select><small class="muted">Uses the completed student's best validation snapshot. Its original BC checkpoint is preserved.</small></label>
+          <div id="grpo-source-detail" class="notice" role="status">Choose a completed BC checkpoint.</div>
+          <fieldset>
+            <legend>What should the agent learn to maximize?</legend>
+            <label>Placement weight (%)<input id="grpo-placement-weight" type="number" min="50" max="100" step="1" value="90" required><small class="muted">The remaining weight rewards chip profit. Both components have the same bounded scale.</small></label>
+            <p id="grpo-reward-note" class="small muted">Train on placement after each full 100-hand game. Validation uses the competition's duplicate-round placement, with the same small chip-profit component.</p>
+            <p class="small muted">Competition standings use round-placement points across four rounds. This training objective targets game placement; validation measures the duplicate-round step. <a href="https://docs.poker.monashcoding.com/game-format/scoring/" target="_blank" rel="noopener">Official scoring rules</a></p>
+          </fieldset>
+          <label>Attempts per matched group<select id="grpo-group-size"><option value="2">2 attempts · 200 hand episodes</option><option value="4" selected>4 attempts · 400 hand episodes</option><option value="8">8 attempts · 800 hand episodes</option></select><small class="muted">Each attempt replays the same decks, seats and opponent setup with a different learner action-sampling seed.</small></label>
+          <div class="form-columns"><label>Training episodes<input id="grpo-target" type="number" min="1" max="10000000" step="1" value="10000" required><small class="muted">1 episode = 1 poker hand for the whole table.</small></label><label>Training device<select id="grpo-device"><option value="auto">Automatic · detect available GPU</option><option value="cpu">CPU</option><option value="mps">Apple GPU (MPS)</option><option value="cuda">NVIDIA GPU (CUDA)</option></select><small id="grpo-device-note" class="muted" hidden>This test workspace uses CPU so the main training GPU remains available.</small></label></div>
+          <fieldset><legend>Table sizes</legend><div class="size-options"><label><input name="grpo-size" type="checkbox" value="4" checked>4 players</label><label><input name="grpo-size" type="checkbox" value="5" checked>5 players</label><label><input name="grpo-size" type="checkbox" value="6" checked>6 players</label></div></fieldset>
+          <details class="raw ppo-advanced"><summary>Advanced training and evaluation settings</summary>
+            <div class="form-columns">
+              <label>Episodes per rollout<input id="grpo-rollout" type="number" min="1" max="10000" step="1" value="2000" required><small class="muted">Collect this many hands before updating the policy.</small></label>
+              <label>Update passes per rollout<input id="grpo-update-epochs" type="number" min="1" max="20" step="1" value="4" required></label>
+              <label>Batch size<input id="grpo-batch" type="number" min="16" max="8192" step="1" value="256" required></label>
+              <label>Policy learning rate<input id="grpo-learning-rate" type="number" min="0.000001" max="0.01" step="any" value="0.00003" required></label>
+              <label>Clip ratio<input id="grpo-clip" type="number" min="0.01" max="0.5" step="any" value="0.2" required><small class="muted">Limits the size of each policy update.</small></label>
+              <label>Entropy weight<input id="grpo-entropy" type="number" min="0" max="1" step="any" value="0.01" required><small class="muted">Encourages exploration during training.</small></label>
+              <label>BC anchor weight<input id="grpo-bc-weight" type="number" min="0" max="10" step="any" value="0.02" required><small class="muted">Discourages moving too far from the starting policy.</small></label>
+              <label>Target KL<input id="grpo-kl" type="number" min="0.001" max="0.5" step="any" value="0.02" required><small class="muted">Stops an update early when the policy changes too much.</small></label>
+              <label>Evaluate every N rollouts<input id="grpo-eval-interval" type="number" min="1" max="1000" step="1" value="5" required></label>
+              <label>Evaluation seeds<input id="grpo-eval-seeds" type="number" min="1" max="20" step="1" value="3" required><small class="muted">More independent seed groups improve comparison reliability and take longer.</small></label>
+              <label>Random seed<input id="grpo-seed" type="number" min="0" max="2147483647" step="1" value="42" required></label>
+            </div>
+          </details>
+          <fieldset class="ppo-milestone-settings">
+            <legend>Milestone evaluations</legend>
+            <label class="training-toggle"><input id="grpo-milestones-enabled" type="checkbox" checked><span>Save and evaluate milestone policies<small class="muted">Compare the starting BC policy and saved GRPO policies at 4-, 5- and 6-player tables.</small></span></label>
+            <div id="grpo-milestone-inputs" class="form-columns">
+              <label>Every N training episodes<input id="grpo-milestone-interval" type="number" min="1" max="10000000" step="1" value="50000" required></label>
+              <label>Evaluation seed groups<input id="grpo-milestone-seeds" type="number" min="1" max="20" step="1" value="3" required></label>
+            </div>
+            <p class="small muted">Policies are saved at exact milestone episode counts, after complete groups. Episode targets, rollouts and milestone intervals must be multiples of the group size × 100 hands. Every evaluation game has 100 hands; milestone results and training validation are separate comparisons.</p>
+          </fieldset>
+          <div id="grpo-estimate" class="notice" role="status">Choose a completed checkpoint and at least five opponents for all table sizes.</div>
+          <button id="grpo-create" class="button primary full" type="submit">Start GRPO training <span>→</span></button>
+          <div id="grpo-status" class="small" role="status" aria-live="polite"></div>
+        </form>
+        <div>
+          <div class="teacher-heading"><h3>Opponent pool</h3><div><button id="grpo-opponents-all" class="text-button" type="button">Select all</button><button id="grpo-opponents-none" class="text-button" type="button">Clear</button></div></div>
+          <p class="small muted">Milestone evaluations require at least five distinct opponents because they always include 4-, 5- and 6-player tables. When milestones are off, choose enough distinct opponents to fill your training tables. Each hand has one learner.</p>
+          <div id="grpo-opponent-list" class="lab-choice-list ppo-opponent-list" aria-label="GRPO opponents"></div>
+          <div class="detail-section ppo-explanation">
+            <h3>What the group teaches</h3>
+            <p>With four attempts, one group uses 4 × 100 = <strong>400 training episodes</strong>. Decks, seats and opponent setup match within that group; only the learner action-sampling seed changes. Opponent responses can still differ as play changes.</p>
+            <p>A group with identical rewards gives no relative reward learning signal. The plots show group reward spread and the share of groups with no spread.</p>
+            <p><strong>Training best</strong> is selected by weighted duplicate-round placement and chip score on fixed validation games. The initial BC policy can remain best.</p>
+            <p><strong>Milestone best</strong> compares the separate milestone evaluations. Game placement and duplicate-round placement are shown separately. Download a saved policy while a local job is running, paused or completed.</p>
+            <p>A separate held-out test evaluates the selected policy after training. Compare placement, chips and failures on fresh games. GRPO is not guaranteed to outperform PPO; neither training loss nor reward spread establishes playing strength.</p>
+            <p class="muted">Pause preserves completed iterations. An unfinished iteration is replayed when you resume.</p>
+          </div>
+        </div>
+      </div>
+      <div class="lab-library-heading"><h3>GRPO agents & training jobs</h3><span id="grpo-job-count" class="muted small">Loading…</span></div>
+      <div id="grpo-jobs"></div>
+    </section>
+
+    </section>
+    <section id="evaluate" class="workspace-view" aria-label="Evaluate" hidden>
+      <div class="view-intro notice"><strong>Compare like for like.</strong> Use the same agents, seeds and hand counts. <a href="#models">Choose agents in the model library →</a> Start with a 10-hand smoke test; use larger runs to judge playing strength.</div>
+      <section class="panel" id="launch">
+        <div class="panel-heading"><div><p class="eyebrow">PUT STRATEGY TO WORK</p><h2>Configure a run</h2></div><span class="tag emerald">LOCAL</span></div>
+        <form id="run-form">
+          <fieldset><legend>Run mode</legend><div class="mode-options"><label class="choice"><input type="radio" name="mode" value="benchmark" checked><span><strong>Benchmark</strong><small>Evaluate against profile opponents</small></span></label><label class="choice"><input type="radio" name="mode" value="tournament"><span><strong>Tournament</strong><small>Play selected agents together</small></span></label><label class="choice"><input type="radio" name="mode" value="study"><span><strong>Table-size study</strong><small>Measure every bot at 4, 5 and 6 players</small></span></label></div></fieldset>
+          <label>Seeds <input id="seeds" value="arena-1, arena-2, arena-3" placeholder="seed1, seed2, seed3" required><small class="muted">Comma-separated. Reuse seeds for repeatable experiments.</small></label>
+          <div class="form-columns"><label>Hands per game<select id="deals-preset"><option value="100">100 · Competition</option><option value="10">10 · Smoke test</option><option value="custom">Custom · Experimental</option></select></label><label id="custom-deals-label" hidden>Custom hands<input id="custom-deals" type="number" min="1" step="1" value="100"></label></div>
+          <div id="study-settings" class="study-settings" hidden>
+            <fieldset><legend>Table sizes</legend><div class="size-options"><label><input type="checkbox" name="table-size" value="4" checked>4 players</label><label><input type="checkbox" name="table-size" value="5" checked>5 players</label><label><input type="checkbox" name="table-size" value="6" checked>6 players</label></div></fieldset>
+            <label>Batches per seed<input id="study-batches" type="number" min="1" max="20" step="1" value="1"><small class="muted">Each batch mixes the lineups and uses fresh deals. All starting seats are rotated within a lineup.</small></label>
+            <div id="study-estimate" class="notice" role="status" aria-live="polite">Select at least six agents for all table sizes.</div>
+            <button id="study-preview-button" class="button secondary" type="button">Preview schedule and coverage</button>
+            <div id="study-preview-status" class="small" role="status" aria-live="polite"></div>
+            <div id="study-preview" hidden></div>
+          </div>
+          <p id="mode-note" class="notice">Benchmarks play each agent against all four house bots, once per seat. Tournaments play four rounds between selected agents, with 2–6 agents per table. Seven entrants split into tables of four and three. Seeds and hand count determine the benchmark profile; the leaderboard profile dropdown only filters results.</p>
+          <div class="training-options">
+            <label class="training-toggle"><input id="record-training" type="checkbox" aria-controls="teacher-settings" aria-describedby="training-note"><span><strong>Record training data</strong><small id="training-note" class="muted">Save each teacher’s visible state and chosen action for behavioural cloning. This collects data; it does not train a student model.</small></span></label>
+            <fieldset id="teacher-settings" hidden>
+              <legend>Teacher bots</legend>
+              <p class="small muted">Choose whose decisions to record from the agents selected for this run. Other entrants still play as opponents.</p>
+              <div class="teacher-heading"><span id="teacher-count" class="small muted">0 teachers selected</span><div><button id="teachers-all" class="text-button" type="button">Select all teachers</button><button id="teachers-none" class="text-button" type="button">Clear teachers</button></div></div>
+              <div id="teacher-list" class="teacher-list"></div>
+            </fieldset>
+          </div>
+          <div class="launch-summary"><span id="selection-count">0 agents selected</span><span id="run-profile">Profile: default</span></div>
+          <button class="button primary full" id="queue-button" type="submit">Queue run <span>→</span></button>
+          <div id="run-status" role="status" class="small" aria-live="polite"></div>
+        </form>
+      </section>
+    <section class="panel" id="rankings">
+      <div class="panel-heading"><div><p class="eyebrow">MEASURE WHAT MATTERS</p><h2>Benchmark leaderboard</h2></div><label class="inline-label">Profile<select id="profile"><option value="default">Default</option></select></label></div>
+      <p class="profile-note">Latest completed result per version, with matching seeds, hands, and opponents. Set wins include ties. Use several seeds to check improvements; house-bot results do not predict official tournament placement.</p>
+      <div id="leaderboard"></div>
+    </section>
+    <section class="panel" id="tournament-rankings">
+      <div class="panel-heading"><div><p class="eyebrow">AGENT VS AGENT</p><h2>Tournament leaderboard</h2></div><label class="inline-label">Run<select id="tournament-run"><option value="latest">Latest completed tournament</option></select></label></div>
+      <p class="profile-note" id="tournament-note">Tournament standings are separate from house-bot benchmarks.</p>
+      <div id="tournament-board"></div>
+      <p class="profile-note">Agent exports keep the runnable source and bundled model files, with main.py at the root. Check the original licence before sharing an export.</p>
+    </section>
+    <section class="panel" id="study-rankings">
+      <div class="panel-heading"><div><p class="eyebrow">FOUR, FIVE, SIX PLAYERS</p><h2>Table-size study results</h2></div><label class="inline-label">Run<select id="study-run"><option value="latest">Latest study</option></select></label></div>
+      <p class="profile-note" id="study-note">Compare each bot at fixed table sizes, with mixed opponents and all starting seats.</p>
+      <div id="study-board"></div>
+      <details class="raw study-details"><summary>Coverage, recording and variation</summary><div id="study-coverage"></div></details>
+      <p class="profile-note">bb/100 means big blinds won per 100 hands. Results apply to this run’s opponent pool. Batch ranges show observed variation, not confidence intervals. Runs are kept separate.</p>
+    </section>
+
+    </section>
+    <section id="experiments" class="workspace-view" aria-label="Experiments" hidden>
+      <section class="panel"><div class="panel-heading"><div><p class="eyebrow">RESEARCH LOG</p><h2>What has been tried?</h2></div><span id="research-as-of" class="tag">SAVED SNAPSHOT</span></div><p id="research-scope" class="profile-note">Earlier development experiments are documented separately from this installation’s runs.</p><div id="research-methods" class="method-grid"></div></section>
+      <section class="panel"><div class="panel-heading"><h2>Published experiment history</h2><span class="muted small">Read-only reference</span></div><div id="research-history"><p class="muted">Loading history…</p></div></section>
+    <section class="panel" id="queue"><div class="panel-heading"><div><p class="eyebrow">THIS INSTALLATION</p><h2>Evaluation queue & history</h2></div><span class="muted small">Auto-refresh · 2 seconds</span></div><div id="run-list"></div></section>
+
+    </section>
+    <footer>Poker Bot Challenge Competition · Local research workspace · Agent uploads execute on your machine.</footer>
+  </main>
+</body>
+</html>
